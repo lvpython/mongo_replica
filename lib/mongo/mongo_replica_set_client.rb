@@ -331,6 +331,7 @@ module Mongo
       if socket
         return socket
       else
+        log(:info, "checkout got failed!")
         @connected = false
         raise ConnectionFailure.new("Could not checkout a socket.")
       end
@@ -345,6 +346,7 @@ module Mongo
 
     # Checkout a socket for writing (i.e., a primary node).
     def checkout_writer
+      log(:info, "Checkout_writer...")
       checkout do
         get_socket_from_pool(primary_pool)
       end

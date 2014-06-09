@@ -1,6 +1,6 @@
 module Mongo
   class Node
-
+    include Mongo::Logging
     attr_accessor :host, :port, :address, :client, :socket, :last_state
 
     def initialize(client, host_port)

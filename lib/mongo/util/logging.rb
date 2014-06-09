@@ -9,7 +9,12 @@ module Mongo
 
     # Log a message with the given level.
     def log(level, msg)
-      return unless @logger
+      if defined?(Rails)
+        @logger = Rails.logger unless @logger
+      else
+        return unless @logger
+      end
+
       case level
         when :fatal then
           @logger.fatal "MONGODB [FATAL] #{msg}"

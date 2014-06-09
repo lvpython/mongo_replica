@@ -1,6 +1,7 @@
 module Mongo
   class PoolManager
     include ThreadLocalVariableManager
+    include Mongo::Logging
 
     attr_reader :client,
                 :arbiters,
@@ -45,10 +46,15 @@ module Mongo
 
     def connect
       @refresh_required = false
+      log(:info, "PoolManager Connecting...1")
       disconnect_old_members
       connect_to_members
+      log(:info, "PoolManager Connecting...members done, members is #{@members.inspect}")
       initialize_pools(@members)
+      log(:info, "PoolManager Connecting...primary_pool: #{@primary_pool.inspect} secondary_pools: #{@secondary_pools.inspect}")
       @seeds = discovered_seeds
+      log(:info, "PoolManager Connecting...OK. seeds: #{@seeds.inspect}")
+      @seeds
     end
 
     def refresh!(additional_seeds)
